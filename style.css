@@ -161,44 +161,107 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-/* Background Image Options */
-.hero-section.bg-image-1 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.75) 100%), 
-                url('img/9.jpg');
-}
-
-.hero-section.bg-image-2 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.75) 100%), 
-                url('img/8.jpg');
-}
-
-.hero-section.bg-image-3 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.75) 100%), 
-                url('img/3.png');
-}
-
-.hero-section.bg-image-4 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.75) 100%), 
-                url('img/6.jpg');
-}
-
-.hero-section.bg-image-5 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.75) 100%), 
-                url('img/4.png');
-}
-
-.hero-section.bg-image-6 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.75) 100%), 
-                url('img/2.png');
-}
-
-/* Fallback background jika gambar tidak ada */
+/* Hero Section - Auto Background */
 .hero-section {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    background-repeat: no-repeat;
-}   
+    padding: 150px 0 100px;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    transition: background-image 1.5s ease-in-out;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(212, 175, 55, 0.1) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(212, 175, 55, 0.1) 100%);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--dark-text);
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+.hero-title span {
+    color: var(--gold);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--dark-text);
+    margin-bottom: 30px;
+    max-width: 600px;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.hero-image {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Background Options */
+.hero-section.gradient-1 {
+    background: linear-gradient(135deg, var(--white) 0%, var(--light-gold) 50%, var(--gold) 100%);
+}
+
+.hero-section.gradient-2 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.hero-section.gradient-3 {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.hero-section.gradient-4 {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.hero-section.gradient-5 {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.hero-section.gradient-6 {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.hero-section.gradient-7 {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.hero-section.gradient-8 {
+    background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+}
 
 /* Auto mode indicator */
 .auto-mode-indicator {
@@ -602,7 +665,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .testimonial-card::after {
-    content: '"'        ;
+    content: "";
     position: absolute;
     top: 20px;
     right: 30px;
