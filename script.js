@@ -99,3 +99,122 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 document.addEventListener('DOMContentLoaded', function() {
     new BackgroundChanger();
 });
+
+// Video Player Functionality - Auto Play
+function initVideoPlayers() {
+    const videoContainers = document.querySelectorAll('.video-container');
+    
+    videoContainers.forEach(container => {
+        const video = container.querySelector('video');
+        const playBtn = container.querySelector('.video-play-btn');
+        
+        if (video && playBtn) {
+            // Set video properties for auto-play
+            video.muted = true;
+            video.loop = true;
+            video.playsInline = true;
+            
+            // Auto play when video can play
+            video.addEventListener('canplay', function() {
+                video.play().then(() => {
+                    container.classList.add('playing');
+                }).catch(e => {
+                    console.log('Auto-play prevented:', e);
+                    container.classList.remove('playing');
+                });
+            });
+            
+            // Toggle play/pause on click
+            playBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (video.paused) {
+                    video.play();
+                    container.classList.add('playing');
+                } else {
+                    video.pause();
+                    container.classList.remove('playing');
+                }
+            });
+            
+            // Also toggle on video click
+            video.addEventListener('click', function() {
+                if (video.paused) {
+                    video.play();
+                    container.classList.add('playing');
+                } else {
+                    video.pause();
+                    container.classList.remove('playing');
+                }
+            });
+            
+            // Update playing state
+            video.addEventListener('play', function() {
+                container.classList.add('playing');
+            });
+            
+            video.addEventListener('pause', function() {
+                container.classList.remove('playing');
+            });
+            
+            video.addEventListener('ended', function() {
+                container.classList.remove('playing');
+                // Auto replay
+                setTimeout(() => {
+                    video.play();
+                }, 1000);
+            });
+            
+            // Handle video errors
+            video.addEventListener('error', function() {
+                container.classList.remove('playing');
+                console.error('Video error:', video.error);
+            });
+        }
+    });
+}
+
+// Volume control functionality
+function initVolumeControls() {
+    const volumeBtns = document.querySelectorAll('.volume-btn');
+    
+    volumeBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const video = this.closest('.video-wrapper').querySelector('video');
+            video.muted = !video.muted;
+            this.innerHTML = video.muted ? 
+                '<i class="fas fa-volume-mute"></i>' : 
+                '<i class="fas fa-volume-up"></i>';
+        });
+    });
+}
+
+// Initialize video players when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    new BackgroundChanger();
+    initVideoPlayers();
+    initVolumeControls();
+});
+
+// Re-initialize videos when they become visible (for mobile optimization)
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        const videos = document.querySelectorAll('.video-container video');
+        videos.forEach(video => {
+            if (video.paused && isElementInViewport(video)) {
+                video.play().catch(e => console.log('Re-play prevented:', e));
+            }
+        });
+    }
+});
+
+// Helper function to check if element is in viewport
+function isElementInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+}
